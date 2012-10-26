@@ -1,0 +1,52 @@
+/**
+ * XULSchoolChrome namespace.
+ */
+if ("undefined" == typeof(XULSchoolChrome)) {
+  var XULSchoolChrome = {};
+};
+
+/**
+ * Controls the browser overlay for the Hello World extension.
+ */
+XULSchoolChrome.BlockSiteObserver = 
+{
+	observe: function(aSubject, aTopic, aData)
+	{
+		if (aTopic != 'http-on-modify-request')
+			return;
+
+		aSubject.QueryInterface(Components.interfaces.nsIHttpChannel);
+		Application.console.log("This is log from http logger: "+aSubject.URI.spec);
+
+		/*const BlockSitePrefBranch = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("BlockSite.");
+		
+		if(BlockSitePrefBranch.prefHasUserValue("enabled") && BlockSitePrefBranch.getBoolPref("enabled"))
+		{
+			if (BlockSite.checkLocation(aSubject.URI.spec))
+			{
+				if (BlockSitePrefBranch.prefHasUserValue("showWarning") && BlockSitePrefBranch.getBoolPref("showWarning"))
+					BlockSite.showBlockWarningBar();
+				aSubject.loadFlags = Components.interfaces.nsICachingChannel.LOAD_ONLY_FROM_CACHE;
+				aSubject.cancel(Components.results.NS_ERROR_FAILURE);
+			}
+		}*/
+	},
+
+	QueryInterface: function(iid)
+	{
+		if (!iid.equals(Components.interfaces.nsISupports) &&
+		!iid.equals(Components.interfaces.nsIObserver))
+		throw Components.results.NS_ERROR_NO_INTERFACE;
+
+		return this;
+	}
+};
+
+// Add our observer
+var observerService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+observerService.addObserver(XULSchoolChrome.BlockSiteObserver, "http-on-modify-request", false);
+
+// Remove observer when current window closes
+window.addEventListener("unload", function() {
+  observerService.removeObserver(XULSchoolChrome.BlockSiteObserver, "http-on-modify-request");
+}, false);

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8" name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>WebSocket Test</title>
+<style>
+        html {
+			height: 100%;
+			overflow: hidden;
+		}
+		body {
+			height: 100%;
+			overflow: hidden;
+			margin:0;
+			padding:0;
+		}
+		#keyboard {
+		    position: relative;
+		    top: 0px;
+		    background-color: transparent;
+		    border: transparent;
+		    height:0px;
+		}
+</style>
+<script language="javascript" type="text/javascript">
+
+  var wsUri = "ws://192.168.1.99:8000/";
+  var x = 0;
+  var y = 0;
+
+  function controllerWebSocket()
+  {
+    websocket = new WebSocket(wsUri,"mkmouse");
+    websocket.onopen = function(evt) { onOpen(evt) };
+    websocket.onclose = function(evt) { onClose(evt) };
+    websocket.onmessage = function(evt) { onMessage(evt) };
+    websocket.onerror = function(evt) { onError(evt) };
+  }
+
+  function onOpen(evt)
+  {
+    console.log("Websocket opened...");
+    //websocket.send("0");
+    
+    document.getElementById("touchpad").addEventListener("touchmove", function (evt) {
+        evt.preventDefault();
+        var message = '{ "type": "mouse", "subtype": "rel", "x":'+(evt.touches[0].clientX  - x)+', "y":'+(evt.touches[0].clientY - y)+', "button": 0 }\0';
+        websocket.send(message);
+        x = evt.touches[0].clientX;
+        y = evt.touches[0].clientY;
+    }, false);
+    
+    document.getElementById("touchpad").addEventListener("touchstart", function (evt) {
+        x = evt.touches[0].clientX;
+        y = evt.touches[0].clientY;
+    }, false);
+    
+    document.getElementById("touchpad").addEventListener("click", function (evt) {
+        evt.preventDefault();
+        var message = '{ "type": "mouse", "subtype": "rel", "x": 0, "y": 0, "button": 1 }\0';
+        websocket.send(message);
+    }, false);
+
+    document.getElementById("keyvis").addEventListener("click", function (evt) {
+        document.getElementById("keyboard").focus();
+    }, false);
+    
+    /*
+    document.getElementById("keyboard").addEventListener("keydown", function (evt) {
+        var message = '{ "type": "keydown", "keycode": '+evt.keyCode+' }\0';
+        websocket.send(message);
+    }, false);
+
+    document.getElementById("keyboard").addEventListener("keyup", function (evt) {
+        var message = '{ "type": "keyup", "keycode": '+evt.keyCode+' }\0';
+        websocket.send(message);
+    }, false);
+    */
+    
+    document.getElementById("keyboard").addEventListener("keypress", function (evt) {
+        evt.preventDefault();
+        //var message = 'cout << XKeysymToString('+evt.keyCode+') << endl;\0';
+        var message = '{ "type": "keyboard", "keycode": '+evt.keyCode+' }\0';
+        websocket.send(message);
+    }, false);
+    
+    document.getElementById("keyboard").addEventListener("keydown", function (evt) {
+        if(evt.keyCode == 8) {
+          var message = '{ "type": "keyboard", "keycode": '+evt.keyCode+' }\0';
+          websocket.send(message);
+        }
+    }, false);
+  }
+
+  function onClose(evt)
+  {
+    console.log("Websocket disconnected...");
+  }
+
+  function onMessage(evt)
+  {
+    console.log("Received: "+evt.data);
+  }
+
+  function onError(evt)
+  {
+    console.log("Error occured...");
+  }
+  
+  window.addEventListener("load", controllerWebSocket, false);
+</script>
+<head>
+<body>
+<input id="keyboard" type="text""></input>
+<div id="touchpad" style="width: 100%; height: 80%;"></div>
+<div id="keyvis" style="width: 100%; height: 20%; border: 1px solid black"></div>
+</body>
+</html> 
