@@ -22,7 +22,7 @@ MKComponent::~MKComponent()
 /* void Movemouse (in long delx, in long dely); */
 NS_IMETHODIMP MKComponent::Movemouse(PRInt32 delx, PRInt32 dely)
 {
-  	XTestFakeRelativeMotionEvent(display, delx, dely, CurrentTime);
+    XTestFakeRelativeMotionEvent(display, delx, dely, CurrentTime);
     XSync(display,0);
     return NS_OK;
 }

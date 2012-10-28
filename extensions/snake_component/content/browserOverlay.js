@@ -7,7 +7,7 @@
 
   try
   {
-    var mkService = Components.classes["@snapstick.com/mkcomponent;1"].getService(Components.interfaces.IMKComponent);
+    //var mkService = Components.classes["@snapstick.com/mkcomponent;1"].getService(Components.interfaces.IMKComponent);
     var mkjs = Components.classes["@snapstick.com/mkjscomponent;1"].getService(Components.interfaces.IMKJSComponent);
   }
   catch(err)
@@ -27,13 +27,13 @@
           /// Mousemove code
           delx = XULSchoolChrome.scalefactor * Math.round(delx * Math.sqrt(Math.abs(delx)));
           dely = XULSchoolChrome.scalefactor * Math.round(dely * Math.sqrt(Math.abs(dely)));        
-          mkService.Movemouse(delx,dely);       
+          //mkService.Movemouse(delx,dely);       
       },
       Click: function() {
-          mkService.MouseClick(1);
+          //mkService.MouseClick(1);
       },
       KeyPress: function(keycode) {
-          mkService.KeyDownUp(keycode);
+          //mkService.KeyDownUp(keycode);
       }
   }
 
@@ -104,7 +104,7 @@
   
   window.addEventListener("load", function(event) {
     prefService.addObserver("extensions.mouse_keyboard_extension.", XULSchoolChrome.PrefObs, false);
-    mkService.StartWebsocketServer(8000);
+    //mkService.StartWebsocketServer(8000);
   }, true, <strong>true</strong>);
   
   window.addEventListener("unload", function(event) {

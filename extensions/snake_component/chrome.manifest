@@ -10,3 +10,4 @@ contract @snapstick.com/mkjscomponent;1 {3ef9d0d6-0e1a-11e2-9f83-770cf8d9c752}
 
 interfaces components/MKInt.xpt
 binary-component components/MozillMK.so abi=Linux_x86-gcc3
+
