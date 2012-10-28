@@ -1,7 +1,8 @@
 #include "nsISupports.idl"
 
 [scriptable, uuid(80160f04-f348-11e1-b712-fb5eb71742e1)]
-interface IMKComponent : nsiSupports {
+interface IMKComponent : nsISupports
+{
 void Movemouse(in long delx, in long dely);
 void SetMousePosition(in long x, in long y);
 void KeyDownUp(in long keysym);

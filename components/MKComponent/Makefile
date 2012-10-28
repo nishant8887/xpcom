@@ -1,9 +1,9 @@
 MODULE		= MozillMK
 
 # Change this to point at your Gecko SDK directory.
-GECKO_SDK_PATH ?= $(HOME)/xulrunner-sdk-15
+GECKO_SDK_PATH ?= $(HOME)/Documents/Repositories/xulrunner-sdk-15
 
-XPIDL	       ?= $(HOME)/xulrunner-sdk-3.6/sdk/bin/xpidl
+XPIDL	       ?= $(HOME)/Documents/Repositories/xulrunner-sdk-15/sdk/bin
 
 CXX	       ?= c++
 
@@ -54,10 +54,10 @@ GECKO_LDFLAGS =  -L$(GECKO_SDK_PATH)/bin \
 		 $(NULL)
 
 %.h: %.idl
-	$(XPIDL) -m header $(GECKO_INCLUDES) $<
+	python $(XPIDL)/header.py $(GECKO_INCLUDES) -o $@ $<
 
 %.xpt: %.idl
-	$(XPIDL) -m typelib $(GECKO_INCLUDES) $<
+	python $(XPIDL)/typelib.py $(GECKO_INCLUDES) -o $@ $<
 
 %.o: %.cpp Makefile
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $(GECKO_CONFIG_INCLUDE) $(GECKO_DEFINES) $(GECKO_INCLUDES) $<
