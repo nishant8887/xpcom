@@ -1,0 +1,13 @@
+content   snaker                content/
+skin      snaker  classic/1.0   skin/
+locale    snaker  en-US         locale/en-US/
+
+overlay chrome://browser/content/browser.xul  chrome://snaker/content/browserOverlay.xul
+
+interfaces components/MKJSInt.xpt
+component {3ef9d0d6-0e1a-11e2-9f83-770cf8d9c752} components/MKJSComp.js
+contract @snapstick.com/mkjscomponent;1 {3ef9d0d6-0e1a-11e2-9f83-770cf8d9c752}
+
+interfaces components/MKInt.xpt
+binary-component components/MozillMK.so abi=Linux_x86-gcc3
+

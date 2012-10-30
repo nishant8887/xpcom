@@ -1,9 +1,9 @@
 MODULE		= MozillMK
 
 # Change this to point at your Gecko SDK directory.
-GECKO_SDK_PATH ?= $(HOME)/Documents/Repositories/xulrunner-sdk-15
+GECKO_SDK_PATH ?= $(HOME)/Documents/Repositories/xulrunner-sdk-16
 
-XPIDL	       ?= $(HOME)/Documents/Repositories/xulrunner-sdk-15/sdk/bin
+XPIDL	       ?= $(HOME)/Documents/Repositories/xulrunner-sdk-16/sdk/bin
 
 CXX	       ?= c++
 
@@ -69,4 +69,5 @@ $(MODULE).so: $(XPIDLSRCS:%.idl=%.h) $(XPIDLSRCS:%.idl=%.xpt) $(CPPSRCS:%.cpp=%.
 build: $(MODULE).so
 
 clean:
+	rm *.o
 	rm $(MODULE).so

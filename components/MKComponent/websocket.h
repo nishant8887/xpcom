@@ -9,7 +9,7 @@
 #include <libwebsockets.h>
 #include <pthread.h>
 
-#define RESOURCE_PATH "/home/nishant8887/Documents/Repositories/xpcom/components/htmls/mkcontroller.html"
+#define RESOURCE_PATH "/home/nishant8887/Documents/Repositories/xpcom/htmls/mkcontroller.html"
 #define MAX_CLIENTS 100
 using namespace std;
 
