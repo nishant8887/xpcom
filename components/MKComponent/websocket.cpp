@@ -3,6 +3,27 @@
 
 MKComponent *mksim;
 int ClientMap[MAX_CLIENTS];
+string resrcpath;
+
+void initFilePath() {
+    //char path[256];
+    //getcwd(path,256);
+
+    pid_t pid;
+    pid = getpid();
+    char linkname[256];
+    sprintf((char *)linkname, "/proc/%i/exe", pid);
+
+    char buf[256];
+    readlink(linkname, buf, 256);
+
+    string pathstr;
+    pathstr.append(buf);
+    resrcpath = pathstr.substr(0,pathstr.find_last_of("/\\"));
+    cout << "The path for executable is " << resrcpath << endl;
+
+    resrcpath.append("/snake-control.html");
+}
 
 void initMap()
 {
@@ -88,7 +109,7 @@ int WebsocketServer::callback_http(struct libwebsocket_context *context, struct 
 {
     switch (reason) {
         case LWS_CALLBACK_HTTP: {
-            libwebsockets_serve_http_file(wsi, RESOURCE_PATH, "html");
+            libwebsockets_serve_http_file(wsi, resrcpath.c_str(), "html");
             libwebsocket_close_and_free_session(context, wsi, LWS_CLOSE_STATUS_NORMAL);
             break;
         }
@@ -213,6 +234,9 @@ int WebsocketServer::start()
     /*pthread_mutex_unlock(&ws_threadMutex);
     cout << pthread_mutex_trylock(&ws_threadMutex) << endl;
     cout << "In Server start..." << endl;*/
+
+    initFilePath();
+
     pthread_attr_t  attr;
     int returnVal;
     returnVal = pthread_attr_init(&attr);
