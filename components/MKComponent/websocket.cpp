@@ -22,7 +22,7 @@ void initFilePath() {
     resrcpath = pathstr.substr(0,pathstr.find_last_of("/\\"));
     cout << "The path for executable is " << resrcpath << endl;
 
-    resrcpath.append("/snake-control.html");
+    resrcpath.append("/static/html/snake-control.html");
 }
 
 void initMap()

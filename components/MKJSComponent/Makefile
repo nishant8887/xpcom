@@ -1,6 +1,6 @@
-GECKO_SDK_PATH ?= $(HOME)/Documents/Repositories/xulrunner-sdk-16
+GECKO_SDK_PATH ?= ../../../xulrunner-sdk-16
 
-XPIDL	       ?= $(HOME)/Documents/Repositories/xulrunner-sdk-16/sdk/bin
+XPIDL	       ?= $(GECKO_SDK_PATH)/sdk/bin
 
 XPIDLSRCS	= \
 		MKJSInt.idl \
