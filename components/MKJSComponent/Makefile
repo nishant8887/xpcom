@@ -1,4 +1,5 @@
-GECKO_SDK_PATH ?= ../../../xulrunner-sdk-16
+VER		= 15
+GECKO_SDK_PATH ?= ../../../xulrunner-sdk-$(VER)
 
 XPIDL	       ?= $(GECKO_SDK_PATH)/sdk/bin
 
