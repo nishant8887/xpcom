@@ -1,4 +1,4 @@
-MODULE		= mozillmk
+MODULE		= MozillMK
 
 VER		= 15
 # Change this to point at your Gecko SDK directory.
