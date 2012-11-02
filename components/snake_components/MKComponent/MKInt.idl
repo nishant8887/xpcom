@@ -1,0 +1,17 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(80160f04-f348-11e1-b712-fb5eb71742e1)]
+interface IMKComponent : nsISupports
+{
+void Movemouse(in long delx, in long dely);
+void SetMousePosition(in long x, in long y);
+void KeyDownUp(in long keysym);
+void KeyDown(in long keysym);
+void KeyUp();
+void MouseClick(in long button);
+void MouseDown(in long button);
+void MouseUp();
+long GetMouseX();
+long GetMouseY();
+void StartWebsocketServer(in long port);
+};

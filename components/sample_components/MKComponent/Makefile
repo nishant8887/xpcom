@@ -2,7 +2,7 @@ MODULE		= mozillmk
 
 VER		= 15
 # Change this to point at your Gecko SDK directory.
-GECKO_SDK_PATH ?= ../../../xulrunner-sdk-$(VER)
+GECKO_SDK_PATH ?= ../../../../xulrunner-sdk-$(VER)
 
 XPIDL	       ?= $(GECKO_SDK_PATH)/sdk/bin
 

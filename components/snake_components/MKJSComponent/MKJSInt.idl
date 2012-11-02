@@ -1,0 +1,8 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(3ef9d0d6-0e1a-11e2-9f83-770cf8d9c752)]
+interface IMKJSComponent : nsISupports
+{
+    void Log(in ACString msg);
+    void RaiseEvent(in ACString eventmsg);
+};
