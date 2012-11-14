@@ -1,0 +1,15 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(174a6694-2a7c-11e2-af3d-0026220fb69d)]
+interface IMainComponent : nsISupports
+{
+void Movemouse(in long delx, in long dely);
+void SetMousePosition(in long x, in long y);
+void KeyDownUp(in long keysym);
+void MouseClick(in long button);
+long GetMouseX();
+long GetMouseY();
+void SendNativeMessage(in string message);
+long SendClientMessage(in long clientid, in string message);
+void StartWebsocketServer(in long port);
+};

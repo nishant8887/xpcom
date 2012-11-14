@@ -1,0 +1,8 @@
+#include "nsISupports.idl"
+
+[scriptable, uuid(2688fa8a-2a7c-11e2-86f4-0026220fb69d)]
+interface IJSubComponent : nsISupports
+{
+    void Log(in ACString logmsg);
+    void RaiseEvent(in ACString evtmsg);
+};
