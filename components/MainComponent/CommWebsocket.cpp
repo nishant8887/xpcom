@@ -8,6 +8,7 @@
 
 MainComponent *gtmc;
 map<string, string> ClientMap;
+map<string, string>::iterator iter;
 
 void copytobuffer(unsigned char *&lbuffer, unsigned char *&msg_start, int &msg_size, string str)
 {
@@ -82,6 +83,8 @@ int WebsocketServer::callback_http(struct libwebsocket_context *context, struct 
 {
     string mainpath("/home/nishant8887/Documents/Repositories/static");
     string request, resrcpath, extension, mime;
+    ostringstream clientlist;
+    
     switch (reason) {
         case LWS_CALLBACK_HTTP: {
 	    request = (char *)in;
@@ -91,6 +94,15 @@ int WebsocketServer::callback_http(struct libwebsocket_context *context, struct 
 		resrcpath = "/html/index.html";
 	    } else if(!request.compare("/api")) {
 		resrcpath = "/html/api.html";
+	    } else if(!request.compare("/clientlist")) {
+		clientlist << "{ \"clients\": [ ";
+		for( iter=ClientMap.begin(); iter != ClientMap.end(); iter++ ) {
+		    clientlist << "{ \"id\": \"" << (*iter).first << "\", \"info\": " << (*iter).second << " },";
+		}
+		clientlist << "{ NULL } ] }";
+		libwebsocket_write(wsi, (unsigned char *)clientlist.str().c_str(), clientlist.str().length(), LWS_WRITE_HTTP);
+		libwebsocket_close_and_free_session(context, wsi, LWS_CLOSE_STATUS_NORMAL);
+		return 0;
 	    } else {
 		resrcpath = request;
 	    }
@@ -113,9 +125,8 @@ int WebsocketServer::callback_http(struct libwebsocket_context *context, struct 
 	    } else {
 		mime = "text/plain";
 	    }
-	    //char *universal_response = "Hello, World!";
-            //libwebsocket_write(wsi, (unsigned char *)universal_response, strlen(universal_response), LWS_WRITE_HTTP);
-            libwebsockets_serve_http_file(wsi, mainpath.c_str(), mime.c_str());
+	    
+	    libwebsockets_serve_http_file(wsi, mainpath.c_str(), mime.c_str());
             libwebsocket_close_and_free_session(context, wsi, LWS_CLOSE_STATUS_NORMAL);
             break;
         }
