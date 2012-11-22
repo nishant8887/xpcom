@@ -9,6 +9,23 @@
 MainComponent *gtmc;
 map<string, string> ClientMap;
 map<string, string>::iterator iter;
+string applicationpath;
+
+void initialize_path()
+{
+    pid_t pid;
+    pid = getpid();
+    char linkname[256];
+    sprintf((char *)linkname, "/proc/%i/exe", pid);
+
+    char buf[256];
+    readlink(linkname, buf, 256);
+
+    string pathstr;
+    pathstr.append(buf);
+    applicationpath = pathstr.substr(0,pathstr.find_last_of("/\\"));
+    cout << "The path for executable is " << applicationpath << endl;
+}
 
 void copytobuffer(unsigned char *&lbuffer, unsigned char *&msg_start, int &msg_size, string str)
 {
@@ -81,7 +98,7 @@ WebsocketServer::~WebsocketServer()
 
 int WebsocketServer::callback_http(struct libwebsocket_context *context, struct libwebsocket *wsi, enum libwebsocket_callback_reasons reason, void *user, void *in, size_t len)
 {
-    string mainpath("/home/nishant8887/Documents/Repositories/static");
+    string mainpath(applicationpath);
     string request, resrcpath, extension, mime;
     ostringstream clientlist;
     
@@ -91,9 +108,7 @@ int WebsocketServer::callback_http(struct libwebsocket_context *context, struct 
 	    cout << "Http request made. -> " << request << endl;
 	    
 	    if(!request.compare("/")) {
-		resrcpath = "/html/index.html";
-	    } else if(!request.compare("/api")) {
-		resrcpath = "/html/api.html";
+		resrcpath = "/static/html/index.html";
 	    } else if(!request.compare("/clientlist")) {
 		clientlist << "{ \"clients\": [ ";
 		for( iter=ClientMap.begin(); iter != ClientMap.end(); iter++ ) {
@@ -300,6 +315,7 @@ void* wss_thread_proc(void* wsobj)
 
 int WebsocketServer::start()
 {
+    initialize_path();
     pthread_attr_t  attr;
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
