@@ -108,7 +108,7 @@ int WebsocketServer::callback_http(struct libwebsocket_context *context, struct 
 	    cout << "Http request made. -> " << request << endl;
 	    
 	    if(!request.compare("/")) {
-		resrcpath = "/static/html/index.html";
+		resrcpath = "/html/index.html";
 	    } else if(!request.compare("/clientlist")) {
 		clientlist << "{ \"clients\": [ ";
 		for( iter=ClientMap.begin(); iter != ClientMap.end(); iter++ ) {
@@ -122,8 +122,12 @@ int WebsocketServer::callback_http(struct libwebsocket_context *context, struct 
 		resrcpath = request;
 	    }
 	    
+	    mainpath += "/static";
 	    mainpath += resrcpath;
-	    extension = mainpath.substr(mainpath.find_last_of("."));
+	    size_t dotloc = mainpath.find_last_of(".");
+	    if(dotloc <= mainpath.length()) {
+		extension = mainpath.substr(dotloc);
+	    }
 	    
 	    if(!extension.compare(".png")) {
 		mime = "image/png";
