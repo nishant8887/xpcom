@@ -30,7 +30,7 @@ function NavigationBarSettings()
   gBrowser.tabContainer.addEventListener('dblclick', onDblClick, true);
 }
 
-function SnapstickBrowserStartup()
+function GigatechBrowserStartup()
 {
   NavigationBarSettings();
   BrowserStartup();

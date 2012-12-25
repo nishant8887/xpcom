@@ -1,6 +1,6 @@
-content     snapstick    content/
+content     fullscreen    content/
 
-overlay chrome://browser/content/browser.xul   						chrome://snapstick/content/snapstickBrowserChrome.xul
-overlay chrome://mozapps/content/xpinstall/xpinstallConfirm.xul 	chrome://snapstick/content/snapstickinstallConfirm.xul
-overlay chrome://mozapps/content/downloads/unknownContentType.xul	chrome://snapstick/content/snapstickunknownContentType.xul
-style chrome://browser/content/browser.xul chrome://snapstick/content/skin.css
+overlay chrome://browser/content/browser.xul   				chrome://fullscreen/content/gigatechBrowserChrome.xul
+overlay chrome://mozapps/content/xpinstall/xpinstallConfirm.xul 	chrome://fullscreen/content/gigatechinstallConfirm.xul
+overlay chrome://mozapps/content/downloads/unknownContentType.xul	chrome://fullscreen/content/gigatechunknownContentType.xul
+style chrome://browser/content/browser.xul chrome://fullscreen/content/skin.css
