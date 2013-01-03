@@ -11,11 +11,30 @@ map<string, string> ClientMap;
 map<string, string>::iterator iter;
 string applicationpath;
 
+class serverMsg : public nsRunnable
+{
+	public:
+	serverMsg(string ldata, MainComponent *lmcpt) : data(ldata), mcpt(lmcpt)
+	{
+	}
+
+	NS_IMETHOD Run()
+	{
+	    nsCString msgdata(data.c_str(), data.length());
+	    mcpt->jsutils->RaiseEvent(msgdata);
+	}
+
+	private:
+	string data;
+	MainComponent *mcpt;
+};
+
 void initialize_path()
 {
     pid_t pid;
     pid = getpid();
     char linkname[256];
+    memset(linkname,'\0',256);
     sprintf((char *)linkname, "/proc/%i/exe", pid);
 
     char buf[256];
@@ -79,9 +98,12 @@ int getOString(string &value, Value root)
 
 void SendMessageToServer(string type, string message, string client)
 {
-    gtmc->gtservermessage.str(string());
-    gtmc->gtservermessage << "{ \"type\": \"" << type << "\", \"message\": " << message << ", \"client\": \"" << client << "\" }\0";
-    nsCOMPtr<nsIRunnable> srvmsg = NS_NewRunnableMethod(gtmc, &MainComponent::SendServerMessage);
+    ostringstream gtservermessage;
+    //gtmc->gtservermessage.str(string());
+    //gtmc->gtservermessage << "{ \"type\": \"" << type << "\", \"message\": " << message << ", \"client\": \"" << client << "\" }\0";
+    //nsCOMPtr<nsIRunnable> srvmsg = NS_NewRunnableMethod(gtmc, &MainComponent::SendServerMessage);
+    gtservermessage << "{ \"type\": \"" << type << "\", \"message\": " << message << ", \"client\": \"" << client << "\" }\0";
+    nsCOMPtr<nsIRunnable> srvmsg = new serverMsg(gtservermessage.str(),gtmc);
     nsresult resvalue = NS_DispatchToMainThread(srvmsg);
 }
 

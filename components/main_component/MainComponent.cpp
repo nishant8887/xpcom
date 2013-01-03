@@ -1,5 +1,6 @@
 #include "MainComponent.h"
 #include "CommWebsocket.h"
+#include "nsThreadUtils.h"
 
 /* Implementation file */
 NS_IMPL_ISUPPORTS1(MainComponent, IMainComponent)
@@ -60,7 +61,7 @@ NS_IMETHODIMP MainComponent::MouseClick(PRInt32 button)
 }
 
 /* long GetMouseX (); */
-NS_IMETHODIMP MainComponent::GetMouseX(PRInt32 *_retval NS_OUTPARAM)
+NS_IMETHODIMP MainComponent::GetMouseX(PRInt32 *_retval)
 {
     XEvent event;
     XQueryPointer(display, RootWindow(display, DefaultScreen(display)),&event.xbutton.root, &event.xbutton.window, &event.xbutton.x_root, &event.xbutton.y_root, &event.xbutton.x, &event.xbutton.y, &event.xbutton.state);
@@ -69,7 +70,7 @@ NS_IMETHODIMP MainComponent::GetMouseX(PRInt32 *_retval NS_OUTPARAM)
 }
 
 /* long GetMouseY (); */
-NS_IMETHODIMP MainComponent::GetMouseY(PRInt32 *_retval NS_OUTPARAM)
+NS_IMETHODIMP MainComponent::GetMouseY(PRInt32 *_retval)
 {
     XEvent event;
     XQueryPointer(display, RootWindow(display, DefaultScreen(display)),&event.xbutton.root, &event.xbutton.window, &event.xbutton.x_root, &event.xbutton.y_root, &event.xbutton.x, &event.xbutton.y, &event.xbutton.state);
@@ -85,7 +86,7 @@ NS_IMETHODIMP MainComponent::SendNativeMessage(const char * message)
 }
 
 /* long SendClientMessage (in long clientid, in string message); */
-NS_IMETHODIMP MainComponent::SendClientMessage(PRInt32 clientid, const char * message, PRInt32 *_retval NS_OUTPARAM)
+NS_IMETHODIMP MainComponent::SendClientMessage(PRInt32 clientid, const char * message, PRInt32 *_retval)
 {
     if(!serverstarted) return NS_OK;
 
@@ -147,8 +148,8 @@ void MainComponent::GetKeys(KeyCode &keycode, long &is_shift, KeySym keysym)
 
 void MainComponent::SendServerMessage()
 {
-    nsCString msgdata(gtservermessage.str().c_str(), gtservermessage.str().length());
-    jsutils->RaiseEvent(msgdata);
+    //nsCString msgdata(gtservermessage.str().c_str(), gtservermessage.str().length());
+    //jsutils->RaiseEvent(msgdata);
 }
 
 /* End of implementation class template. */

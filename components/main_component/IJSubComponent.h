@@ -22,16 +22,16 @@
   {0x2688fa8a, 0x2a7c, 0x11e2, \
     { 0x86, 0xf4, 0x00, 0x26, 0x22, 0x0f, 0xb6, 0x9d }}
 
-class NS_NO_VTABLE NS_SCRIPTABLE IJSubComponent : public nsISupports {
+class NS_NO_VTABLE IJSubComponent : public nsISupports {
  public: 
 
   NS_DECLARE_STATIC_IID_ACCESSOR(IJSUBCOMPONENT_IID)
 
   /* void Log (in ACString logmsg); */
-  NS_SCRIPTABLE NS_IMETHOD Log(const nsACString & logmsg) = 0;
+  NS_IMETHOD Log(const nsACString & logmsg) = 0;
 
   /* void RaiseEvent (in ACString evtmsg); */
-  NS_SCRIPTABLE NS_IMETHOD RaiseEvent(const nsACString & evtmsg) = 0;
+  NS_IMETHOD RaiseEvent(const nsACString & evtmsg) = 0;
 
 };
 
@@ -39,18 +39,18 @@ class NS_NO_VTABLE NS_SCRIPTABLE IJSubComponent : public nsISupports {
 
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_IJSUBCOMPONENT \
-  NS_SCRIPTABLE NS_IMETHOD Log(const nsACString & logmsg); \
-  NS_SCRIPTABLE NS_IMETHOD RaiseEvent(const nsACString & evtmsg); 
+  NS_IMETHOD Log(const nsACString & logmsg); \
+  NS_IMETHOD RaiseEvent(const nsACString & evtmsg); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_IJSUBCOMPONENT(_to) \
-  NS_SCRIPTABLE NS_IMETHOD Log(const nsACString & logmsg) { return _to Log(logmsg); } \
-  NS_SCRIPTABLE NS_IMETHOD RaiseEvent(const nsACString & evtmsg) { return _to RaiseEvent(evtmsg); } 
+  NS_IMETHOD Log(const nsACString & logmsg) { return _to Log(logmsg); } \
+  NS_IMETHOD RaiseEvent(const nsACString & evtmsg) { return _to RaiseEvent(evtmsg); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_IJSUBCOMPONENT(_to) \
-  NS_SCRIPTABLE NS_IMETHOD Log(const nsACString & logmsg) { return !_to ? NS_ERROR_NULL_POINTER : _to->Log(logmsg); } \
-  NS_SCRIPTABLE NS_IMETHOD RaiseEvent(const nsACString & evtmsg) { return !_to ? NS_ERROR_NULL_POINTER : _to->RaiseEvent(evtmsg); } 
+  NS_IMETHOD Log(const nsACString & logmsg) { return !_to ? NS_ERROR_NULL_POINTER : _to->Log(logmsg); } \
+  NS_IMETHOD RaiseEvent(const nsACString & evtmsg) { return !_to ? NS_ERROR_NULL_POINTER : _to->RaiseEvent(evtmsg); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */

@@ -7,4 +7,4 @@ component {2688fa8a-2a7c-11e2-86f4-0026220fb69d} components/JSubComponent.js
 contract @gigatech.com/jsubcomponent;1 {2688fa8a-2a7c-11e2-86f4-0026220fb69d}
 
 interfaces components/IMainComponent.xpt
-binary-component components/MozillMK.so abi=Linux_x86_64-gcc3
+binary-component components/MozillMK.so abi=Linux_x86-gcc3

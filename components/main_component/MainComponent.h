@@ -38,7 +38,9 @@ public:
   MainComponent();
   bool serverstarted;
   void SendServerMessage();
-  ostringstream gtservermessage;
+  //ostringstream gtservermessage;
+  
+  nsCOMPtr<IJSubComponent> jsutils;
 
 private:
   ~MainComponent();
@@ -48,6 +50,5 @@ protected:
     Display *display;
     WebsocketServer *wss;
     void GetKeys(KeyCode &, long &, KeySym);
-    nsCOMPtr<IJSubComponent> jsutils;
 };
 #endif
