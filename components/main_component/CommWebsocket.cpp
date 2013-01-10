@@ -33,15 +33,14 @@ void initialize_path()
 {
     pid_t pid;
     pid = getpid();
-    char linkname[256];
-    memset(linkname,'\0',256);
+    char linkname[1024];
     sprintf((char *)linkname, "/proc/%i/exe", pid);
 
-    char buf[256];
-    readlink(linkname, buf, 256);
+    char buf[1024];
+    memset(buf, 0, sizeof(buf));
+    readlink(linkname, buf, sizeof(buf)-1);
 
-    string pathstr;
-    pathstr.append(buf);
+    string pathstr(buf);
     applicationpath = pathstr.substr(0,pathstr.find_last_of("/\\"));
     cout << "The path for executable is " << applicationpath << endl;
 }
