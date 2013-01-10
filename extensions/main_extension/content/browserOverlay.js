@@ -1,12 +1,28 @@
   if ("undefined" == typeof(CommControl)) {
     var CommControl = {
-      document_loaded: false,
-      websocket_started: false,
       loadContent: function (status) {
-        if(status) {
-          gBrowser.loadURI("http://localhost:8000/");
-        } else {
-          //gBrowser.loadURI("http://localhost:8000/");
+        var intermediateFile = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
+        
+        switch(status) {
+          case "success":
+            gBrowser.loadURI("http://localhost:8000/");
+            break;
+          case "init":
+            intermediateFile.append("default.html");
+            mkjs.Log(intermediateFile.path);
+            try {
+              var urifixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(Components.interfaces.nsIURIFixup);
+              var uri = urifixup.createFixupURI(intermediateFile.path, 0);
+              gBrowser.loadURI(uri.spec);
+            }
+            catch (e) {
+              mkjs.Log("Error occured while loading default html.");
+            }
+            break;
+          case "error":
+            //intermediateFile.append("default.html");
+            break;
+          default:  
         }
       }
     };
@@ -62,17 +78,17 @@
   }, true, <strong>true</strong>);
 
   window.addEventListener("load", function(event) {
-    mkjs.Log("Starting websocket server...");
-    mkService.StartWebsocketServer(8000);
     StartupObserver = new XULObserver();
   }, true, <strong>true</strong>);
   
   window.addEventListener("gigatech_nevt_websocket_opened", function (event) {
     mkjs.Log("Websocket server started...");
-    CommControl.websocket_started = true;
-    if(CommControl.document_loaded) {
-      CommControl.loadContent(true);
-    }
+    CommControl.loadContent("success");
+  }, true, <strong>true</strong>);
+
+  window.addEventListener("gigatech_nevt_websocket_error", function (event) {
+    mkjs.Log("Error occured while starting websocket server...");
+    CommControl.loadContent("error");
   }, true, <strong>true</strong>);
   
   function XULObserver()
@@ -84,11 +100,16 @@
   XULObserver.prototype = {
       observe: function(subject, topic, data) {
           if (topic == this.EVENT_CONTENT_DOCUMENT_ELEMENT_INSERTED) {
-              CommControl.document_loaded = true;
-              if(CommControl.websocket_started) {
-                CommControl.loadContent(true);
+            if(typeof subject.defaultView != "undefined" && subject.defaultView != null) {
+              if(subject.defaultView.top == subject.defaultView.self) {
+                if(subject.location.href == "about:home") {
+                  CommControl.loadContent("init");
+                  mkjs.Log("Starting websocket server...");
+                  mkService.StartWebsocketServer(8000);
+                  this.unregister();
+                }
               }
-              this.unregister();
+            }
           }
       },
   
