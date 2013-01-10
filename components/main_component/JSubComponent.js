@@ -21,13 +21,20 @@ JSubComponent.prototype = {
     var recentWindow = this.wm.getMostRecentWindow("navigator:browser");
     var destdocument = recentWindow.content.document;
     
-    var element = destdocument.createElement("gigatech_evt_data");
-    element.setAttribute("msg", eventmsg);
-    destdocument.documentElement.appendChild(element);
-    
-    var evt = destdocument.createEvent("Events");
-    evt.initEvent("gigatech_evt", true, false);
-    destdocument.dispatchEvent(evt);
+    var eventObj = JSON.parse(eventmsg);
+    if(eventObj.type != "native") {
+        var element = destdocument.createElement("gigatech_evt_data");
+        element.setAttribute("msg", eventmsg);
+        destdocument.documentElement.appendChild(element);
+        
+        var evt = destdocument.createEvent("Events");
+        evt.initEvent("gigatech_evt", true, false);
+        destdocument.dispatchEvent(evt);
+    } else {
+        var evt = destdocument.createEvent("Events");
+        evt.initEvent("gigatech_nevt_"+eventObj.message, true, false);
+        destdocument.dispatchEvent(evt);
+    }
   }
 };
 var components = [JSubComponent];

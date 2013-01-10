@@ -99,9 +99,6 @@ int getOString(string &value, Value root)
 void SendMessageToServer(string type, string message, string client)
 {
     ostringstream gtservermessage;
-    //gtmc->gtservermessage.str(string());
-    //gtmc->gtservermessage << "{ \"type\": \"" << type << "\", \"message\": " << message << ", \"client\": \"" << client << "\" }\0";
-    //nsCOMPtr<nsIRunnable> srvmsg = NS_NewRunnableMethod(gtmc, &MainComponent::SendServerMessage);
     gtservermessage << "{ \"type\": \"" << type << "\", \"message\": " << message << ", \"client\": \"" << client << "\" }\0";
     nsCOMPtr<nsIRunnable> srvmsg = new serverMsg(gtservermessage.str(),gtmc);
     nsresult resvalue = NS_DispatchToMainThread(srvmsg);
@@ -311,13 +308,16 @@ void WebsocketServer::execute()
     int opts = 0;
 
     context = libwebsocket_create_context(port, interface, protocols, libwebsocket_internal_extensions, certificate_path, key_path, -1, -1, opts);
-    gtmc->serverstarted = true;
-   
+    
     if (context == NULL) {
         cout << "Initialization of socket failed." << endl;
+	SendMessageToServer("native","\"websocket_error\"","native");
         return;
     }
-        
+    
+    gtmc->serverstarted = true;
+    SendMessageToServer("native","\"websocket_opened\"","native");
+    
     while (1) {
         libwebsocket_service(context, 50);
     }

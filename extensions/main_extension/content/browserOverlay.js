@@ -1,5 +1,15 @@
   if ("undefined" == typeof(CommControl)) {
-    var CommControl = {};
+    var CommControl = {
+      document_loaded: false,
+      websocket_started: false,
+      loadContent: function (status) {
+        if(status) {
+          gBrowser.loadURI("http://localhost:8000/");
+        } else {
+          //gBrowser.loadURI("http://localhost:8000/");
+        }
+      }
+    };
   };
   
   try
@@ -52,11 +62,42 @@
   }, true, <strong>true</strong>);
 
   window.addEventListener("load", function(event) {
-    mkjs.Log("Websocket server started...");
+    mkjs.Log("Starting websocket server...");
     mkService.StartWebsocketServer(8000);
+    StartupObserver = new XULObserver();
   }, true, <strong>true</strong>);
   
-  window.addEventListener("unload", function(event) {
-    mkjs.Log("Unloading window...");
+  window.addEventListener("gigatech_nevt_websocket_opened", function (event) {
+    mkjs.Log("Websocket server started...");
+    CommControl.websocket_started = true;
+    if(CommControl.document_loaded) {
+      CommControl.loadContent(true);
+    }
   }, true, <strong>true</strong>);
   
+  function XULObserver()
+  {
+      this.EVENT_CONTENT_DOCUMENT_ELEMENT_INSERTED = 'document-element-inserted';
+      this.register();
+  }
+  
+  XULObserver.prototype = {
+      observe: function(subject, topic, data) {
+          if (topic == this.EVENT_CONTENT_DOCUMENT_ELEMENT_INSERTED) {
+              CommControl.document_loaded = true;
+              if(CommControl.websocket_started) {
+                CommControl.loadContent(true);
+              }
+              this.unregister();
+          }
+      },
+  
+      register: function() {
+          var observerService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);  
+          observerService.addObserver(this, this.EVENT_CONTENT_DOCUMENT_ELEMENT_INSERTED, false);
+      },  
+      unregister: function() {  
+          var observerService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);  
+          observerService.removeObserver(this, this.EVENT_CONTENT_DOCUMENT_ELEMENT_INSERTED);  
+      }
+  }  
