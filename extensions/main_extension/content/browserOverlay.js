@@ -19,9 +19,6 @@
               mkjs.Log("Error occured while loading default html.");
             }
             break;
-          case "error":
-            //intermediateFile.append("default.html");
-            break;
           default:  
         }
       }
@@ -84,11 +81,6 @@
   window.addEventListener("gigatech_nevt_websocket_opened", function (event) {
     mkjs.Log("Websocket server started...");
     CommControl.loadContent("success");
-  }, true, <strong>true</strong>);
-
-  window.addEventListener("gigatech_nevt_websocket_error", function (event) {
-    mkjs.Log("Error occured while starting websocket server...");
-    CommControl.loadContent("error");
   }, true, <strong>true</strong>);
   
   function XULObserver()
