@@ -37,8 +37,6 @@ public:
 
   MainComponent();
   bool serverstarted;
-  void SendServerMessage();
-  //ostringstream gtservermessage;
   
   nsCOMPtr<IJSubComponent> jsutils;
 

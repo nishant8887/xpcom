@@ -146,10 +146,4 @@ void MainComponent::GetKeys(KeyCode &keycode, long &is_shift, KeySym keysym)
     keycode = XKeysymToKeycode(display, keysym);
 }
 
-void MainComponent::SendServerMessage()
-{
-    //nsCString msgdata(gtservermessage.str().c_str(), gtservermessage.str().length());
-    //jsutils->RaiseEvent(msgdata);
-}
-
 /* End of implementation class template. */
