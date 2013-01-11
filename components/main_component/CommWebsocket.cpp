@@ -126,7 +126,9 @@ int WebsocketServer::callback_http(struct libwebsocket_context *context, struct 
 	    cout << "Http request made. -> " << request << endl;
 	    
 	    if(!request.compare("/")) {
-		resrcpath = "/html/index.html";
+		resrcpath = "/html/controller/index.html";
+	    } else if(!request.compare("/server")) {
+		resrcpath = "/html/server/index.html";
 	    } else if(!request.compare("/clientlist")) {
 		clientlist << "{ \"clients\": [ ";
 		for( iter=ClientMap.begin(); iter != ClientMap.end(); iter++ ) {

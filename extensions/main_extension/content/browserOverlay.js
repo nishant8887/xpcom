@@ -5,7 +5,7 @@
         
         switch(status) {
           case "success":
-            gBrowser.loadURI("http://localhost:8000/");
+            gBrowser.loadURI("http://localhost:8000/server");
             break;
           case "init":
             intermediateFile.append("default.html");
