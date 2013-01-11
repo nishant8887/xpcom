@@ -1,14 +1,13 @@
   if ("undefined" == typeof(CommControl)) {
     var CommControl = {
       loadContent: function (status) {
-        var intermediateFile = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-        
         switch(status) {
           case "success":
             gBrowser.loadURI("http://localhost:8000/server");
             break;
           case "init":
-            intermediateFile.append("default.html");
+            var intermediateFile = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("CurProcD", Components.interfaces.nsIFile);
+            intermediateFile.append("/static/html/default.html");
             mkjs.Log(intermediateFile.path);
             try {
               var urifixup = Components.classes["@mozilla.org/docshell/urifixup;1"].getService(Components.interfaces.nsIURIFixup);
